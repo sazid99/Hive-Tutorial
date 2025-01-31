@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hiveapp/presentation/viewmodels/user_viewmodel.dart';
 import 'package:hiveapp/presentation/widgets/custom_add_dialog.dart';
+import 'package:hiveapp/presentation/widgets/custom_edit_dialog.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,7 +29,9 @@ class HomePage extends StatelessWidget {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => CustomAddDialog(),
+                        builder: (context) {
+                          return CustomAddDialog();
+                        },
                       );
                     },
                     icon: Icon(Icons.add),
@@ -40,9 +43,39 @@ class HomePage extends StatelessWidget {
                   itemCount: viewModel.usersInfo.length,
                   itemBuilder: (context, index) {
                     final userInfo = viewModel.usersInfo[index];
-                    return ListTile(
-                      title: Text(userInfo.userName),
-                      subtitle: Text(userInfo.age.toString()),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        color: Colors.teal,
+                        child: ListTile(
+                          title: Text(userInfo.userName),
+                          subtitle: Text(userInfo.age.toString()),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return CustomEditDialog(
+                                        index: index,
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  viewModel.deleteInfo(index);
+                                },
+                                icon: Icon(Icons.delete),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),

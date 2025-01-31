@@ -3,8 +3,9 @@ import 'package:hiveapp/data/models/user_model.dart';
 import 'package:hiveapp/presentation/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class CustomAddDialog extends StatelessWidget {
-  const CustomAddDialog({super.key});
+class CustomEditDialog extends StatelessWidget {
+  final int index;
+  const CustomEditDialog({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CustomAddDialog extends StatelessWidget {
       child: Consumer<UserViewModel>(
         builder: (context, viewModel, child) {
           return AlertDialog(
-            title: Text("Add User Info"),
+            title: Text("Edit User Info"),
             content: SizedBox(
               height: 140,
               child: Column(
@@ -46,13 +47,13 @@ class CustomAddDialog extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  final newUserInfo = UserModel(
+                  final updatedUserInfo = UserModel(
                       userName: userNameController.text,
                       age: int.tryParse(userAgeController.text) ?? 0);
-                  viewModel.addUserInfo(newUserInfo);
+                  viewModel.updateUserInfo(index, updatedUserInfo);
                   Navigator.pop(context);
                 },
-                child: Text("Add"),
+                child: Text("Ok"),
               ),
             ],
           );
